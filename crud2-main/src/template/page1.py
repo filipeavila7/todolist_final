@@ -5,43 +5,62 @@ from src.model.db import SessionLocal  # Importando a sessão para conexão com 
 class Page1:
     def __init__(self, page: ft.Page):
         self.page = page
-        page.theme_mode = ft.ThemeMode.DARK
 
     def construir(self):
         # Obtém todas as tarefas do banco de dados
         tarefas = crud.listar_tarefa(SessionLocal())
-    
-    # Cria uma lista de controles (tarefa) para mostrar na interface
-        tarefa_rows = []
-    
+        # Lista de colunas do DataTable
+        columns = [ 
+            ft.DataColumn(ft.Text("Descrição")),
+            ft.DataColumn(ft.Text("Status")),
+            ft.DataColumn(ft.Text("Ações")),
+        ]
+        
+        # Lista de linhas para o DataTable
+        rows = []
         for tarefa in tarefas:
-            # Criando uma linha para cada tarefa
-            tarefa_row = ft.Row(
-                [
-                    
-                    ft.Text(tarefa.DESCRICAO, width=300),  # Exibindo a descrição da tarefa
-                    ft.Text("Concluída" if tarefa.SITUACAO else "Pendente", width=150),  # Exibindo o status
-                    # Botão de editar
-                    ft.IconButton(
-                        icon=ft.icons.EDIT,
-                        tooltip="Editar tarefa",
-                        on_click=lambda e, task=tarefa: self.editar_tarefa(task)  # Passando a tarefa específica para edição
-                    ),
-                    # Botão de deletar
-                    ft.IconButton(
-                        icon=ft.icons.DELETE_OUTLINED,
-                        tooltip="Deletar tarefa",
-                        on_click=lambda e, task=tarefa: self.remover_tarefa(task)  # Passando a tarefa específica para remoção
-                    ),
-                ],
-                spacing=10  # Adicionando um pequeno espaço entre os controles
-            )
-            tarefa_rows.append(tarefa_row)
-    
-        return ft.Column([
-            ft.ElevatedButton('Voltar', on_click=lambda _: self.page.go('/interface')),
-            ft.Column(tarefa_rows)  # Adicionando todas as linhas de tarefas na tela
-        ])
+            # Para cada tarefa, criamos uma linha no DataTable
+            rows.append(
+                ft.DataRow(
+                    cells=[
+                        ft.DataCell(ft.Text(tarefa.DESCRICAO)),
+                        ft.DataCell(ft.Text("Concluída" if tarefa.SITUACAO else "Pendente")),
+                        ft.DataCell(
+                            ft.Row(
+                                [
+                                    ft.IconButton(
+                                        icon=ft.icons.EDIT,
+                                        tooltip="Editar tarefa",
+                                        on_click=lambda e, task=tarefa: self.editar_tarefa(task)  # Passando a tarefa específica para edição
+                                    ),
+                                    ft.IconButton(
+                                        icon=ft.icons.DELETE_OUTLINED,
+                                        tooltip="Deletar tarefa",
+                                        on_click=lambda e, task=tarefa: self.remover_tarefa(task)  # Passando a tarefa específica para remoção
+                                    ),
+                                ],
+                            ), 
+                        ), 
+                    ] , 
+                ) , 
+            ) ,
+        
+        # Cria a tabela de tarefas
+        data_table = ft.DataTable(
+            column_spacing=200,
+            columns=columns,
+            rows=rows,
+             
+        )
+        
+        # Retorna o layout com o DataTable e o botão de voltar
+        return ft.Column(
+            [
+                ft.IconButton(icon=ft.Icons.ARROW_BACK_IOS, tooltip="Voltar", on_click=lambda _: self.page.go("/interface")),
+                data_table,
+                
+            ]
+        )
     
     def remover_tarefa(self, tarefa):
         def confirmar_exclusao(e):

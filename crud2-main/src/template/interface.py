@@ -9,11 +9,13 @@ from src.service import crud  # Importando as funções de CRUD do arquivo crud.
 from src.model.db import SessionLocal  # Importando a sessão do banco de dados
 from page1 import Page1
 
+
 # Lista global para armazenar as tarefas
 lista_tarefas = []
 
 def main(page=ft.Page):  # Função principal que é chamada para renderizar a página
     page.title = 'ToDo List'  # Definindo o título da página no navegador
+    page.bgcolor = "#282828"
     page.window.height = 700
     page.window.width = 700
     page.window.center()
@@ -24,6 +26,7 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
             page.update()  # Atualizando a página para mostrar a mensagem de erro
         else:
             nova_tarefa.error_text = None  # Se o campo não está vazio, removendo a mensagem de erro
+            
 
             # Criando a tarefa no banco de dados
             tarefa_criada = crud.cadastrar_tarefa(SessionLocal(), nova_tarefa.value, False)  # Situação inicial como False
@@ -81,7 +84,7 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
         page.update()
 
         # Criando o campo de edição com o valor atual da tarefa
-        campo_edicao = ft.TextField(label='Editar tarefa', value=checkbox.label, width=300)
+        campo_edicao = ft.TextField(label='Editar tarefa', value=checkbox.label, width=500)
 
         # Criando o botão para salvar a edição
         def salvar_edicao(e):
@@ -190,12 +193,17 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
 
     # Criando o layout para adicionar novas tarefas
     page.add(ft.Column([  
-        nova_tarefa, 
-        ft.Row([ft.ElevatedButton('Adicionar', on_click=adicionar, color=ft.colors.WHITE, bgcolor=ft.colors.GREEN_500, width=200, height=50),
-        ft.ElevatedButton('Listar tarefas', on_click=listar_tarefa, color=ft.colors.WHITE, bgcolor=ft.colors.BLUE_500, width=200, height=50 )])
-    ]))  
+        ft.Row(
+            [
+            nova_tarefa,
+            ft.IconButton(icon=ft.Icons.ADD, tooltip="Adicionar tarefa", on_click=adicionar),
+            ft.IconButton(icon=ft.Icons.MENU_BOOK, tooltip="Listar tarefas", on_click=listar_tarefa)
+            ],
+        ),
+    ]
+    )
+    )
 
-    page.theme_mode = ft.ThemeMode.DARK  # Definindo o tema inicial como escuro
     page.update()  # Atualizando a página
 
     
