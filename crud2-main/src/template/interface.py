@@ -198,7 +198,7 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
     page.theme_mode = ft.ThemeMode.DARK  # Definindo o tema inicial como escuro
     page.update()  # Atualizando a página
 
-    print(lista_tarefas)
+    
 
 # Iniciando o app
 ft.app(main)
