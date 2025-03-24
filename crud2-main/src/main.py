@@ -1,7 +1,6 @@
 import flet as ft
+from template.interface import main
+from template.page1 import Page1
 
-
-def main(page: ft.Page):
-    ...
-
-ft.app(main)
+if __name__ == '__main__':
+    ft.app(main, Page1)
