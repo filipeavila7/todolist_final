@@ -21,7 +21,7 @@ class Page1:
         for tarefa in tarefas:
             # Para cada tarefa, criamos uma linha no DataTable
             rows.append(
-                ft.DataRow(
+                ft. DataRow(
                     cells=[
                         ft.DataCell(ft.Text(tarefa.DESCRICAO)),
                         ft.DataCell(ft.Text("Concluída" if tarefa.SITUACAO else "Pendente")),
@@ -54,11 +54,18 @@ class Page1:
         )
         
         # Retorna o layout com o DataTable e o botão de voltar
-        return ft.Column(
+        return ft.ResponsiveRow(
             [
-                ft.IconButton(icon=ft.Icons.ARROW_BACK_IOS, tooltip="Voltar", on_click=lambda _: self.page.go("/interface")),
-                data_table,
-                
+                ft.Column(
+                    [
+                        ft.IconButton(
+                            icon=ft.icons.ARROW_BACK_IOS,
+                            tooltip="Voltar",
+                            on_click=lambda _: self.page.go("/interface"),
+                        ),
+                        data_table,
+                    ]
+                )
             ]
         )
     

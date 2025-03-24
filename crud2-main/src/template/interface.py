@@ -15,10 +15,83 @@ lista_tarefas = []
 
 def main(page=ft.Page):  # Função principal que é chamada para renderizar a página
     page.title = 'ToDo List'  # Definindo o título da página no navegador
-    page.bgcolor = "#282828"
+    #page.bgcolor = "#282828"
     page.window.height = 700
     page.window.width = 700
     page.window.center()
+    page.padding = 10
+    page.scroll = 'adaptive'
+
+    def alterar_tema(e):  
+        if page.theme_mode == ft.ThemeMode.LIGHT:
+            page.theme_mode = ft.ThemeMode.DARK
+            btn_tema.icon = ft.icons.WB_SUNNY_OUTLINED
+            btn_tema.tooltip = 'Alterar o tema para escuro'  # Correção aqui
+           # t.bgcolor = ft.Colors.BLACK
+           # t.color = ft.Colors.WHITE
+        else:
+            page.theme_mode = ft.ThemeMode.LIGHT
+            btn_tema.icon = ft.icons.NIGHTS_STAY_OUTLINED
+            btn_tema.tooltip = 'Alterar para tema claro'  # Correção aqui
+           # t.bgcolor = ft.Colors.WHITE
+           # t.color = ft.Colors.BLACK
+
+        page.update()  # Atualiza a página
+
+    btn_tema = ft.IconButton(icon = ft.icons.WB_SUNNY_OUTLINED, tooltip = 'Alterar o tema', on_click = alterar_tema)
+
+    def check_item_clicked(e):
+        e.control.checked = not e.control.checked
+        page.update()
+
+    def mudar_rota(e):  # Função chamada quando há mudança na seleção da barra de navegação
+        if e.control.selected_index == 0:  
+            page.go('/tela') 
+        
+       
+           
+    def listar_tarefa(e):
+         
+        def rotas(route):
+            page.controls.clear()  # Limpa os controles da página antes de adicionar novos
+            tela = None  # Inicializando a variável `tela` como `None` de forma explícita
+
+            if route == '/':
+                tela = Page1(page)  # Instanciando corretamente a Page1
+            elif route == '/interface':
+                tela = main(page)  # Mantendo a navegação para a página principal
+            else:
+                print(f"Rota desconhecida: {route}")
+
+            if tela:  # Verifica se `tela` foi corretamente inicializada
+                page.add(tela.construir())  # Adiciona a tela se não for None
+
+
+
+
+        page.on_route_change = lambda e: rotas(e.route)
+        page.go('/')
+
+    page.appbar = ft.AppBar(
+        leading=ft.Icon(ft.Icons.CHECK_CIRCLE_SHARP),
+        leading_width=40,
+        title=ft.Text("To Do List"),
+        center_title=False,
+        bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
+        actions=[
+            btn_tema,
+            ft.IconButton(icon=ft.Icons.MENU_BOOK, tooltip="Listar tarefas", on_click=listar_tarefa),
+            ft.PopupMenuButton(
+                items=[
+                    ft.PopupMenuItem(text="Botão do PIX"),
+                    ft.PopupMenuItem(),  # divider
+                    ft.PopupMenuItem(
+                        text="Checked item", checked=False, on_click=check_item_clicked
+                    ),
+                ],
+            ),
+        ],
+    )
 
     def adicionar(e):  # Função para adicionar uma nova tarefa
         if not nova_tarefa.value:  # Verificando se o campo de texto para adicionar tarefa está vazio
@@ -159,34 +232,6 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
     # Definindo o campo de texto para inserir nova tarefa
     nova_tarefa = ft.TextField(label='Nome da tarefa', width=300,)
     
-    def mudar_rota(e):  # Função chamada quando há mudança na seleção da barra de navegação
-        if e.control.selected_index == 0:  
-            page.go('/tela') 
-        
-       
-           
-    def listar_tarefa(e):
-         
-        def rotas(route):
-            page.controls.clear()  # Limpa os controles da página antes de adicionar novos
-            tela = None  # Inicializando a variável `tela` como `None` de forma explícita
-
-            if route == '/':
-                tela = Page1(page)  # Instanciando corretamente a Page1
-            elif route == '/interface':
-                tela = main(page)  # Mantendo a navegação para a página principal
-            else:
-                print(f"Rota desconhecida: {route}")
-
-            if tela:  # Verifica se `tela` foi corretamente inicializada
-                page.add(tela.construir())  # Adiciona a tela se não for None
-
-
-
-
-        page.on_route_change = lambda e: rotas(e.route)
-        page.go('/')
-    
         
 
     
@@ -196,8 +241,7 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
         ft.Row(
             [
             nova_tarefa,
-            ft.IconButton(icon=ft.Icons.ADD, tooltip="Adicionar tarefa", on_click=adicionar),
-            ft.IconButton(icon=ft.Icons.MENU_BOOK, tooltip="Listar tarefas", on_click=listar_tarefa)
+            ft.IconButton(icon=ft.Icons.ADD, tooltip="Adicionar tarefa", on_click=adicionar)
             ],
         ),
     ]

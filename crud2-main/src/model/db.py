@@ -14,7 +14,7 @@ Base = declarative_base()
 
 # Modelo de Tarefa
 class Tarefa(Base):
-    __tablename__ = 'tarefas'
+    __tablename__ = 'tarefas_WF'
 
     ID = Column(Integer, primary_key=True, autoincrement=True)
     DESCRICAO = Column(String(255), nullable=False)

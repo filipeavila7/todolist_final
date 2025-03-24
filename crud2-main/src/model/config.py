@@ -9,12 +9,12 @@ class Config():
     DB_USER = os.getenv('DB_USER')
     DB_HOSTNAME = os.getenv('DB_HOSTNAME')
     DB_PORT = os.getenv("DB_PORT", 3306)
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 # Criar a URL
 
     DATABASE_URL = (
-        f"mysql+pymysql://{DB_USER}:"
-        f"@{DB_HOSTNAME}:{DB_PORT}/{DB_DATABASE}"
+        f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOSTNAME}:{DB_PORT}/{DB_DATABASE}"
     )
 
 # Criar a Engine 
