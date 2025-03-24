@@ -19,7 +19,7 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
     page.window.height = 700
     page.window.width = 700
     page.window.center()
-    page.padding = 10
+    page.padding = 20
     page.scroll = 'adaptive'
 
     def alterar_tema(e):  
@@ -148,7 +148,7 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
         page.update()
 
         # Criando o campo de edição com o valor atual da tarefa
-        campo_edicao = ft.TextField(label='Editar tarefa', value=checkbox.label, width=500)
+        campo_edicao = ft.TextField(label='Editar tarefa', value=checkbox.label, width=200)
 
         # Criando o botão para salvar a edição
         def salvar_edicao(e):
@@ -221,7 +221,7 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
 
 
     # Definindo o campo de texto para inserir nova tarefa
-    nova_tarefa = ft.TextField(label='Nome da tarefa', width=300,)
+    nova_tarefa = ft.TextField(label='Nome da tarefa', width=200,)
     
         
 
