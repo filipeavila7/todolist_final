@@ -81,15 +81,6 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
         actions=[
             btn_tema,
             ft.IconButton(icon=ft.Icons.MENU_BOOK, tooltip="Listar tarefas", on_click=listar_tarefa),
-            ft.PopupMenuButton(
-                items=[
-                    ft.PopupMenuItem(text="Botão do PIX"),
-                    ft.PopupMenuItem(),  # divider
-                    ft.PopupMenuItem(
-                        text="Checked item", checked=False, on_click=check_item_clicked
-                    ),
-                ],
-            ),
         ],
     )
 
