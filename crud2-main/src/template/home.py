@@ -14,27 +14,35 @@ from page1 import Page1
 lista_tarefas = []
 
 def main(page=ft.Page):  # Função principal que é chamada para renderizar a página
-    page.title = 'ToDo List'  # Definindo o título da página no navegador
-    #page.bgcolor = "#282828"
+    page.title = 'ToDoList'  # Definindo o título da página no navegador
     page.window.height = 700
-    page.window.width = 700
+    page.window.width = 450
     page.window.center()
-    page.padding = 10
+    page.padding = 20
     page.scroll = 'adaptive'
+    page.bgcolor = '#1E201E'
+    
 
     def alterar_tema(e):  
-        if page.theme_mode == ft.ThemeMode.LIGHT:
+        if page.bgcolor == '#F6F0F0':
             page.theme_mode = ft.ThemeMode.DARK
+            page.bgcolor = '#1E201E'
+            nova_tarefa.bgcolor = '#3C3D37'
+            page.floating_action_button.bgcolor = '#697565'
+            page.appbar.bgcolor = '#3C3D37'
+            
             btn_tema.icon = ft.icons.WB_SUNNY_OUTLINED
             btn_tema.tooltip = 'Alterar o tema para escuro'  # Correção aqui
-           # t.bgcolor = ft.Colors.BLACK
-           # t.color = ft.Colors.WHITE
+          
         else:
             page.theme_mode = ft.ThemeMode.LIGHT
+            page.bgcolor = '#F6F0F0'
+            nova_tarefa.bgcolor = '#D5C7A3'
+            page.floating_action_button.bgcolor = '#F2E2B1'
+            page.appbar.bgcolor = '#D5C7A3'
             btn_tema.icon = ft.icons.NIGHTS_STAY_OUTLINED
             btn_tema.tooltip = 'Alterar para tema claro'  # Correção aqui
-           # t.bgcolor = ft.Colors.WHITE
-           # t.color = ft.Colors.BLACK
+           
 
         page.update()  # Atualiza a página
 
@@ -46,7 +54,8 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
 
     def mudar_rota(e):  # Função chamada quando há mudança na seleção da barra de navegação
         if e.control.selected_index == 0:  
-            page.go('/tela') 
+            page.go('/tela')
+            
         
        
            
@@ -58,8 +67,10 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
 
             if route == '/':
                 tela = Page1(page)  # Instanciando corretamente a Page1
+                page.floating_action_button.visible = False
             elif route == '/interface':
                 tela = main(page)  # Mantendo a navegação para a página principal
+                page.floating_action_button.visible = True
             else:
                 print(f"Rota desconhecida: {route}")
 
@@ -75,21 +86,12 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
     page.appbar = ft.AppBar(
         leading=ft.Icon(ft.Icons.CHECK_CIRCLE_SHARP),
         leading_width=40,
-        title=ft.Text("To Do List"),
+        title=ft.Text("To-Do List"),
         center_title=False,
-        bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
+        bgcolor = '#3C3D37',
         actions=[
             btn_tema,
             ft.IconButton(icon=ft.Icons.MENU_BOOK, tooltip="Listar tarefas", on_click=listar_tarefa),
-            ft.PopupMenuButton(
-                items=[
-                    ft.PopupMenuItem(text="Botão do PIX"),
-                    ft.PopupMenuItem(),  # divider
-                    ft.PopupMenuItem(
-                        text="Checked item", checked=False, on_click=check_item_clicked
-                    ),
-                ],
-            ),
         ],
     )
 
@@ -157,7 +159,7 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
         page.update()
 
         # Criando o campo de edição com o valor atual da tarefa
-        campo_edicao = ft.TextField(label='Editar tarefa', value=checkbox.label, width=500)
+        campo_edicao = ft.TextField(label='Editar tarefa', value=checkbox.label, width=200)
 
         # Criando o botão para salvar a edição
         def salvar_edicao(e):
@@ -230,18 +232,18 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
 
 
     # Definindo o campo de texto para inserir nova tarefa
-    nova_tarefa = ft.TextField(label='Nome da tarefa', width=300,)
+    nova_tarefa = ft.TextField(label='Nome da tarefa', width=200, bgcolor='#3C3D37')
     
         
 
-    
+    page.floating_action_button = ft.FloatingActionButton(icon=ft.Icons.ADD_ROUNDED, bgcolor = '#697565', tooltip="Adicionar tarefa", on_click=adicionar)
 
     # Criando o layout para adicionar novas tarefas
     page.add(ft.Column([  
         ft.Row(
             [
             nova_tarefa,
-            ft.IconButton(icon=ft.Icons.ADD, tooltip="Adicionar tarefa", on_click=adicionar)
+           
             ],
         ),
     ]
@@ -254,3 +256,4 @@ def main(page=ft.Page):  # Função principal que é chamada para renderizar a p
 
 # Iniciando o app
 ft.app(main)
+

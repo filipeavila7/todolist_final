@@ -1,5 +1,5 @@
 import flet as ft
-from template.interface import main
+from template.home import main
 from template.page1 import Page1
 
 if __name__ == '__main__':

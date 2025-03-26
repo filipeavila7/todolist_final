@@ -47,7 +47,7 @@ class Page1:
         
         # Cria a tabela de tarefas
         data_table = ft.DataTable(
-            column_spacing=200,
+            column_spacing=60,
             columns=columns,
             rows=rows,
              
